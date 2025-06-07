@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat con IA Local</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Pregúntale a Gemini</h1>
+        </header>
+
+        <main>
+            <div class="chat-interface">
+                <div id="chat-output" class="chat-output">
+                    <!-- Las respuestas de la IA aparecerán aquí -->
+                    <div class="message ai-message">
+                        <p>Hola 👋 ¿En qué puedo ayudarte hoy?</p>
+                    </div>
+                </div>
+
+                <div class="chat-input-area">
+                    <textarea id="user-input" placeholder="Escribe tu pregunta aquí..." rows="3"></textarea>
+                    <button id="send-button">Enviar</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

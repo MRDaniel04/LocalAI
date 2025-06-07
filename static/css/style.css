@@ -1,0 +1,151 @@
+/* static/css/style.css */
+
+/* static/css/style.css */
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    padding: 20px 5%; /* Ajusta el padding lateral a un porcentaje o un valor menor en vw/px */
+                     /* Por ejemplo, 5% a cada lado, o podrías usar 20px si prefieres un margen fijo */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    color: #333;
+    box-sizing: border-box; /* Asegura que el padding no aumente el tamaño total del body más allá del viewport */
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 25px 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    width: 100%; /* El contenedor intentará ocupar el ancho disponible que le deje el padding del body */
+    /* max-width: 700px; */ /* Eliminamos o aumentamos significativamente el max-width */
+    max-width: 1200px; /* O un valor más grande si quieres un límite, ej. 90% o 1200px */
+                       /* Si quieres que llegue casi a los bordes, puedes poner un % alto como 90% o 95% */
+                       /* O simplemente comenta/elimina la línea de max-width para que width: 100% domine */
+                       /* Vamos a probar con un max-width grande pero no infinito */
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto; /* Si usas max-width, esto lo centrará. Si no, no es necesario. */
+}
+
+/* ... (resto de tu CSS) ... */
+
+/* Asegúrate de que el footer (si decides mantenerlo oculto con CSS en vez de quitarlo del HTML) no ocupe espacio */
+/* footer { */
+/*    display: none; */ /* Si solo lo ocultas con CSS */
+/* } */
+
+header {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #2c3e50; /* Un azul oscuro/gris para el título */
+}
+
+header h1 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 2em;
+}
+
+.chat-interface {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Espacio entre la salida y la entrada */
+}
+
+.chat-output {
+    border: 1px solid #e0e0e0; /* Borde sutil */
+    border-radius: 8px;
+    padding: 15px;
+    height: 350px; /* Altura fija, con scroll si es necesario */
+    overflow-y: auto; /* Scroll vertical si el contenido excede la altura */
+    background-color: #f9f9f9; /* Un fondo ligeramente diferente para el área de chat */
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espacio entre mensajes */
+}
+
+.message {
+    padding: 10px 15px;
+    border-radius: 18px;
+    max-width: 80%;
+    line-height: 1.5;
+}
+
+.user-message {
+    background-color: #3498db; /* Azul para mensajes de usuario */
+    color: white;
+    align-self: flex-end; /* Alinea a la derecha */
+    border-bottom-right-radius: 5px;
+}
+
+.ai-message {
+    background-color: #e9ecef; /* Gris claro para mensajes de IA */
+    color: #333;
+    align-self: flex-start; /* Alinea a la izquierda */
+    border-bottom-left-radius: 5px;
+}
+
+.message p {
+    margin: 0;
+}
+
+.chat-input-area {
+    display: flex;
+    gap: 10px; /* Espacio entre textarea y botón */
+    align-items: flex-end; /* Alinea el botón con la parte inferior del textarea si crece */
+}
+
+#user-input {
+    flex-grow: 1; /* El textarea ocupa el espacio disponible */
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+    font-family: 'Roboto', sans-serif;
+    resize: vertical; /* Permite redimensionar verticalmente */
+    min-height: 40px; /* Altura mínima para que coincida con el botón */
+    box-sizing: border-box; /* Incluye padding y border en el tamaño total */
+}
+
+#user-input:focus {
+    outline: none;
+    border-color: #3498db; /* Color de borde al enfocar */
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+#send-button {
+    padding: 12px 20px;
+    background-color: #2ecc71; /* Verde para el botón de enviar */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+    height: fit-content; /* Ajusta la altura al contenido */
+}
+
+#send-button:hover {
+    background-color: #27ae60; /* Verde más oscuro al pasar el ratón */
+}
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 0.9em;
+    color: #7f8c8d; /* Gris para el pie de página */
+}
+
+/* Estilos para el indicador de carga (opcional, lo añadiremos con JS) */
+.loading-indicator {
+    font-style: italic;
+    color: #7f8c8d;
+    padding: 10px 15px;
+    align-self: center;
+}
