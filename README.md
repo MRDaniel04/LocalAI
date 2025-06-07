@@ -15,16 +15,15 @@ Este proyecto implementa una aplicación web de chat simple que te permite inter
 
 *   Python 3.7+
 *   Una API Key de Google Gemini (Puedes obtenerla desde [Google AI Studio](https://aistudio.google.com/))
-*   Git (opcional, para clonar el repositorio)
+*   Git
 
 ## Configuración del Proyecto
 
 1.  **Clona el repositorio (o descarga los archivos):**
     ```bash
-    git clone https://URL_DE_TU_REPOSITORIO_GIT.git
+    git clone https://github.com/MRDaniel04/LocalAI.git
     cd gemini_local_chat
     ```
-    (Reemplaza `URL_DE_TU_REPOSITORIO_GIT.git` con la URL real si lo subes a GitHub/GitLab, etc. Si no, simplemente navega a la carpeta del proyecto).
 
 2.  **Instala las dependencias:**
     ```bash
@@ -41,15 +40,13 @@ Este proyecto implementa una aplicación web de chat simple que te permite inter
 
 ## Uso
 
-1.  **Asegúrate de que tu entorno virtual esté activado.**
-
-2.  **Ejecuta la aplicación Flask:**
+1.  **Ejecuta la aplicación Flask:**
     ```bash
     python app.py
     ```
 
-3.  **Abre tu navegador web y ve a:**
+2.  **Abre tu navegador web y ve a:**
     `http://127.0.0.1:5000/`
     (O `http://TU_IP_LOCAL:5000/` si quieres acceder desde otro dispositivo en tu red local, ya que `app.py` está configurado con `host='0.0.0.0'`).
 
-4.  ¡Comienza a chatear con la IA! Escribe tu pregunta en el cuadro de texto y presiona "Enviar" o la tecla Enter.
+3.  ¡Comienza a chatear con la IA! Escribe tu pregunta en el cuadro de texto y presiona "Enviar" o la tecla Enter.
