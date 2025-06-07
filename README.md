@@ -63,27 +63,6 @@ Sigue estos pasos si vas a ejecutar la aplicación directamente con `python app.
 
 *   **Para el ejecutable:** El archivo `.env` debe estar **junto al archivo `.exe`** (ej. `LocalAI/dist/Gepeto/.env`).
 
-## Estructura del Proyecto
-
-LocalAI/
-├── app.py                 # Script principal de Flask (backend)
-├── .env                   # Archivo para API Key en DESARROLLO (¡IGNORADO POR GIT!)
-├── ChatApp.spec           # Archivo de configuración para PyInstaller (ejemplo)
-├── .gitignore             # Especifica archivos y directorios ignorados por Git
-├── requirements.txt       # Dependencias de Python
-├── README.md              # Este archivo
-├── templates/
-│   └── index.html         # Página principal del chat
-├── static/
-│   ├── css/
-│   │   └── style.css      # Estilos CSS
-│   └── js/
-│       └── script.js      # Lógica JavaScript del frontend
-└── dist/                  # Carpeta creada por PyInstaller (después de construir)
-    └── Gepeto/            # Nombre de tu aplicación (si PyInstaller crea una carpeta)
-        ├── Gepeto.exe     # El ejecutable
-        ├── .env           # Archivo para API Key del EJECUTABLE
-        └── (otros archivos y carpetas si no es --onefile)
 
 ## Tecnologías Utilizadas
 
@@ -91,12 +70,6 @@ LocalAI/
 *   **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
 *   **API:** Google Gemini API
 *   **Empaquetado:** PyInstaller (opcional)
-
-## Posibles Mejoras Futuras
-*   [ ] Mejorar el manejo de errores y feedback al usuario en la interfaz.
-*   [ ] Implementar persistencia del historial de chat.
-*   [ ] Permitir configurar parámetros del modelo Gemini desde la interfaz.
-*   [ ] Añadir soporte para streaming de respuestas.
 
 ## Contribuciones
 Las contribuciones son bienvenidas. Por favor, abre un *issue* para discutir cambios importantes o envía un *pull request*.
