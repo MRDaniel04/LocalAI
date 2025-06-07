@@ -66,24 +66,24 @@ Sigue estos pasos si vas a ejecutar la aplicación directamente con `python app.
 ## Estructura del Proyecto
 
 LocalAI/
-├── app.py # Script principal de Flask (backend)
-├── .env # Archivo para API Key en DESARROLLO (¡IGNORADO POR GIT!)
-├── ChatApp.spec # Archivo de configuración para PyInstaller (ejemplo)
-├── .gitignore # Especifica archivos y directorios ignorados por Git
-├── requirements.txt # Dependencias de Python
-├── README.md # Este archivo
-├── templates/ # Plantillas HTML
-│ └── index.html # Página principal del chat
-└── static/ # Archivos estáticos
-├── css/
-│ └── style.css # Estilos CSS
-└── js/
-└── script.js # Lógica JavaScript del frontend
-dist/ # Carpeta creada por PyInstaller (después de construir)
-└── Gepeto/ # Nombre de tu aplicación
-├── Gepeto.exe # El ejecutable
-└── .env # Archivo para API Key del EJECUTABLE
-└── (otros archivos...)
+├── app.py                 # Script principal de Flask (backend)
+├── .env                   # Archivo para API Key en DESARROLLO (¡IGNORADO POR GIT!)
+├── ChatApp.spec           # Archivo de configuración para PyInstaller (ejemplo)
+├── .gitignore             # Especifica archivos y directorios ignorados por Git
+├── requirements.txt       # Dependencias de Python
+├── README.md              # Este archivo
+├── templates/
+│   └── index.html         # Página principal del chat
+├── static/
+│   ├── css/
+│   │   └── style.css      # Estilos CSS
+│   └── js/
+│       └── script.js      # Lógica JavaScript del frontend
+└── dist/                  # Carpeta creada por PyInstaller (después de construir)
+    └── Gepeto/            # Nombre de tu aplicación (si PyInstaller crea una carpeta)
+        ├── Gepeto.exe     # El ejecutable
+        ├── .env           # Archivo para API Key del EJECUTABLE
+        └── (otros archivos y carpetas si no es --onefile)
 
 ## Tecnologías Utilizadas
 
