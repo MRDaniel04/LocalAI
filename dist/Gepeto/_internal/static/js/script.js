@@ -4,6 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatOutput = document.getElementById('chat-output');
     const userInput = document.getElementById('user-input');
     const sendButton = document.getElementById('send-button');
+    
+    // Nuevos elementos para la subida de archivos
+    const uploadFileButton = document.getElementById('upload-file-button');
+    const fileInput = document.getElementById('file-input');
+    const fileDisplayArea = document.getElementById('file-display-area');
+    let selectedFile = null; // Variable para almacenar el archivo seleccionado
 
     // Función para añadir mensajes al chat
     function addMessage(text, sender) {
@@ -12,21 +18,21 @@ document.addEventListener('DOMContentLoaded', () => {
     
     	const paragraph = document.createElement('p');
     	if (sender === 'ai') {
-        	paragraph.innerHTML = text; // <--- CAMBIO AQUÍ para mensajes de la IA
+        	paragraph.innerHTML = text;
     	} else {
-        	paragraph.textContent = text; // Mantenemos textContent para mensajes del usuario (más seguro)
+        	paragraph.textContent = text;
     	}
     	messageDiv.appendChild(paragraph);
     
     	chatOutput.appendChild(messageDiv);
-    	chatOutput.scrollTop = chatOutput.scrollHeight; // Auto-scroll hacia abajo
+    	chatOutput.scrollTop = chatOutput.scrollHeight;
 	}
 
     // Función para mostrar el indicador de carga
     function showLoadingIndicator() {
         const loadingDiv = document.createElement('div');
-        loadingDiv.classList.add('message', 'ai-message', 'loading-indicator'); // Reutilizamos estilo de ai-message
-        loadingDiv.id = 'loading-indicator'; // Para poder quitarlo luego
+        loadingDiv.classList.add('message', 'ai-message', 'loading-indicator');
+        loadingDiv.id = 'loading-indicator';
         
         const paragraph = document.createElement('p');
         paragraph.textContent = 'Gemini está pensando... 🤔';
@@ -44,33 +50,89 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --- Lógica para la subida de archivos ---
+    if (uploadFileButton && fileInput && fileDisplayArea) { // Asegurarse de que los elementos existen
+        uploadFileButton.addEventListener('click', () => {
+            fileInput.click(); // Activa el input de archivo oculto
+        });
+
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                selectedFile = file;
+                fileDisplayArea.innerHTML = `
+                    <span>${file.name}</span>
+                    <button id="remove-file-button" class="remove-file-btn" title="Quitar archivo">×</button>
+                `;
+                // Añadir event listener al botón de quitar archivo
+                document.getElementById('remove-file-button').addEventListener('click', () => {
+                    selectedFile = null;
+                    fileInput.value = ''; // Importante para permitir seleccionar el mismo archivo de nuevo
+                    fileDisplayArea.innerHTML = '';
+                });
+            } else { // Si el usuario cancela la selección
+                selectedFile = null;
+                fileDisplayArea.innerHTML = '';
+            }
+        });
+    }
+    // --- Fin de la lógica para la subida de archivos ---
+
     async function handleSendMessage() {
         const question = userInput.value.trim();
-        if (!question) return; // No enviar si está vacío
+        
+        // No enviar si no hay pregunta Y no hay archivo.
+        // O ajusta esta lógica si quieres permitir enviar solo un archivo sin pregunta.
+        if (!question && !selectedFile) {
+            userInput.focus(); // Devuelve el foco si no hay nada que enviar
+            return;
+        }
 
-        // 1. Mostrar pregunta del usuario en el chat
-        addMessage(question, 'user');
-        userInput.value = ''; // Limpiar el input
-        userInput.focus(); // Devolver el foco al input
+        // 1. Mostrar mensaje del usuario en el chat
+        // Si hay un archivo, se podría añadir una nota al mensaje del usuario.
+        let userMessageText = question;
+        if (selectedFile && question) {
+            userMessageText = `${question} (Archivo adjunto: ${selectedFile.name})`;
+        } else if (selectedFile && !question) {
+            userMessageText = `Archivo adjunto: ${selectedFile.name}`;
+        }
+        addMessage(userMessageText, 'user');
+        
+        userInput.value = ''; // Limpiar el input de texto
+        userInput.focus();
 
         // 2. Mostrar indicador de carga
         showLoadingIndicator();
 
+        // 3. Preparar datos para enviar (FormData para archivos)
+        const formData = new FormData();
+        formData.append('question', question); // La pregunta de texto (puede estar vacía)
+        
+        if (selectedFile) {
+            formData.append('file', selectedFile, selectedFile.name); // El archivo
+        }
+
         try {
-            // 3. Enviar pregunta al backend
+            // 4. Enviar pregunta y/o archivo al backend
             const response = await fetch('/ask', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ question: question }), // 'question' debe coincidir con lo que espera el backend
+                // NO establezcas 'Content-Type': 'application/json' cuando uses FormData.
+                // El navegador lo configurará automáticamente a 'multipart/form-data'
+                // con el 'boundary' correcto.
+                body: formData,
             });
 
-            // 4. Quitar indicador de carga
+            // 5. Quitar indicador de carga
             removeLoadingIndicator();
 
+            // Limpiar el archivo seleccionado después de un envío exitoso o fallido (controlado por el servidor)
+            if (selectedFile) {
+                selectedFile = null;
+                fileInput.value = ''; 
+                fileDisplayArea.innerHTML = '';
+            }
+
             if (!response.ok) {
-                // Si la respuesta del servidor no es OK (ej. error 500)
                 const errorData = await response.json().catch(() => ({ answer: "Error al procesar la respuesta del servidor." }));
                 addMessage(`Error: ${errorData.answer || response.statusText}`, 'ai');
                 return;
@@ -78,18 +140,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json();
             
-            // 5. Mostrar respuesta de la IA
+            // 6. Mostrar respuesta de la IA
             if (data.answer) {
                 addMessage(data.answer, 'ai');
-            } else if (data.error) { // Si el backend envía un error específico
+            } else if (data.error) {
                 addMessage(`Error de la IA: ${data.error}`, 'ai');
             } else {
                 addMessage("No se recibió una respuesta válida.", 'ai');
             }
 
         } catch (error) {
-            // 6. Quitar indicador de carga (por si acaso) y mostrar error de red/fetch
+            // 7. Quitar indicador de carga y mostrar error de red/fetch
             removeLoadingIndicator();
+            if (selectedFile) { // Limpiar también en caso de error de red
+                selectedFile = null;
+                fileInput.value = '';
+                fileDisplayArea.innerHTML = '';
+            }
             console.error('Error al enviar mensaje:', error);
             addMessage('Hubo un problema al conectar con el servidor. Inténtalo de nuevo.', 'ai');
         }
@@ -98,13 +165,9 @@ document.addEventListener('DOMContentLoaded', () => {
     sendButton.addEventListener('click', handleSendMessage);
 
     userInput.addEventListener('keypress', (event) => {
-        // Enviar con Enter (Shift+Enter para nueva línea)
         if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault(); // Evitar nueva línea en textarea
+            event.preventDefault();
             handleSendMessage();
         }
     });
-
-    // Mensaje inicial (opcional, ya lo tienes en el HTML, pero así se podría añadir dinámicamente)
-    // addMessage("Hola 👋 ¿En qué puedo ayudarte hoy?", 'ai');
 });

@@ -1,93 +1,140 @@
 /* static/css/style.css */
 
-/* static/css/style.css */
+html {
+    height: 100%; /* Asegura que el html ocupe toda la altura */
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit; /* Herencia del box-sizing para todos los elementos */
+}
+
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #f4f7f6;
+    background-color: #1a1a2e;
     margin: 0;
-    padding: 20px 5%; /* Ajusta el padding lateral a un porcentaje o un valor menor en vw/px */
-                     /* Por ejemplo, 5% a cada lado, o podrías usar 20px si prefieres un margen fijo */
+    /* Ajusta el padding lateral del body para que sea más pequeño */
+    /* padding: 20px 5%; */ /* Esto daba un 5% de margen a cada lado */
+    padding: 20px 2%;   /* Prueba con un 2% a cada lado */
+    /* O un valor fijo pequeño si prefieres: */
+    /* padding: 20px 20px; */ 
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column;
     min-height: 100vh;
-    color: #333;
-    box-sizing: border-box; /* Asegura que el padding no aumente el tamaño total del body más allá del viewport */
+    color: #e0e0e0;
 }
 
 .container {
-    background-color: #ffffff;
-    padding: 25px 30px;
+    background-color: #23192d;
+    padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    width: 100%; /* El contenedor intentará ocupar el ancho disponible que le deje el padding del body */
-    /* max-width: 700px; */ /* Eliminamos o aumentamos significativamente el max-width */
-    max-width: 1200px; /* O un valor más grande si quieres un límite, ej. 90% o 1200px */
-                       /* Si quieres que llegue casi a los bordes, puedes poner un % alto como 90% o 95% */
-                       /* O simplemente comenta/elimina la línea de max-width para que width: 100% domine */
-                       /* Vamos a probar con un max-width grande pero no infinito */
+    border: 1px solid #4a0072;
+    box-shadow: 0 0 25px rgba(138, 43, 226, 0.3),
+                0 0 15px rgba(255, 103, 0, 0.2) inset;
+    
+    /* Para que ocupe casi todo el ancho disponible por el body */
+    width: 100%; /* Hará que el contenedor tome el ancho completo que le permite el padding del body */
+    /* max-width: 1200px; */ /* Comenta o elimina esta línea si quieres que siempre se expanda */
+    /* O si quieres un límite superior muy grande, pero que aún se expanda: */
+    /* max-width: 96%; */ /* Por ejemplo, para que sea el 96% del ancho del body */
+
+    margin: auto; /* Sigue centrando si hay un max-width, o si el body es más ancho */
+                  /* Si quieres que siempre esté pegado arriba y abajo, y solo centrado horizontal: */
+                  /* margin: 0 auto; */
+    
     display: flex;
     flex-direction: column;
-    margin: 0 auto; /* Si usas max-width, esto lo centrará. Si no, no es necesario. */
+    flex-grow: 1; 
 }
-
-/* ... (resto de tu CSS) ... */
-
-/* Asegúrate de que el footer (si decides mantenerlo oculto con CSS en vez de quitarlo del HTML) no ocupe espacio */
-/* footer { */
-/*    display: none; */ /* Si solo lo ocultas con CSS */
-/* } */
 
 header {
     text-align: center;
     margin-bottom: 25px;
-    color: #2c3e50; /* Un azul oscuro/gris para el título */
+    color: #ffa500; /* Título en naranja */
 }
 
 header h1 {
     margin: 0;
     font-weight: 700;
-    font-size: 2em;
+    font-size: 2.2em;
+    text-shadow: 0 0 8px rgba(255, 165, 0, 0.7),
+                 0 0 12px rgba(255, 103, 0, 0.5);
+}
+
+main {
+    display: flex; /* Hacemos que 'main' también sea un contenedor flex */
+    flex-direction: column; /* Sus hijos (chat-interface) se apilarán */
+    flex-grow: 1; /* 'main' crecerá para ocupar el espacio restante en '.container' */
+    overflow: hidden; /* Evita que los hijos de main causen scroll en main si no es necesario */
 }
 
 .chat-interface {
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Espacio entre la salida y la entrada */
+    gap: 15px; /* Espacio reducido entre elementos */
+    flex-grow: 1; /* 'chat-interface' crecerá para ocupar el espacio en 'main' */
+    overflow: hidden; /* Para manejar el overflow del chat-output internamente */
+    min-height: 0; /* Truco para flexbox en algunos navegadores para que el hijo con overflow-y funcione bien */
 }
 
 .chat-output {
-    border: 1px solid #e0e0e0; /* Borde sutil */
+    border: 1px solid #3c1053;
     border-radius: 8px;
     padding: 15px;
-    height: 350px; /* Altura fija, con scroll si es necesario */
+    /* height: 350px; */ /* Eliminamos la altura fija */
+    flex-grow: 1; /* El área de chat crecerá para ocupar el espacio disponible */
     overflow-y: auto; /* Scroll vertical si el contenido excede la altura */
-    background-color: #f9f9f9; /* Un fondo ligeramente diferente para el área de chat */
+    background-color: rgba(16, 12, 22, 0.7);
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Espacio entre mensajes */
+    gap: 12px;
+    min-height: 0; /* Importante para que flex-grow funcione correctamente con overflow-y */
 }
+
+/* Estilo para la barra de scroll (opcional, para navegadores WebKit) */
+.chat-output::-webkit-scrollbar {
+    width: 8px;
+}
+.chat-output::-webkit-scrollbar-track {
+    background: #23192d; /* Color del track similar al contenedor */
+    border-radius: 10px;
+}
+.chat-output::-webkit-scrollbar-thumb {
+    background-color: #ff8c00; /* Thumb naranja */
+    border-radius: 10px;
+    border: 2px solid #23192d; /* Espacio alrededor del thumb */
+}
+.chat-output::-webkit-scrollbar-thumb:hover {
+    background-color: #ffa500; /* Naranja más brillante al pasar el ratón */
+}
+
 
 .message {
     padding: 10px 15px;
     border-radius: 18px;
     max-width: 80%;
     line-height: 1.5;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3); /* Sombra general sutil para los mensajes */
 }
 
 .user-message {
-    background-color: #3498db; /* Azul para mensajes de usuario */
-    color: white;
-    align-self: flex-end; /* Alinea a la derecha */
+    background-color: #ff6700; /* Naranja vibrante para mensajes de usuario */
+    color: #1a1a2e; /* Texto oscuro para buen contraste con naranja */
+    font-weight: 500;
+    align-self: flex-end;
     border-bottom-right-radius: 5px;
+    box-shadow: 0 0 10px rgba(255, 103, 0, 0.5), /* Glow naranja */
+                0 2px 5px rgba(0,0,0,0.3);
 }
 
 .ai-message {
-    background-color: #e9ecef; /* Gris claro para mensajes de IA */
-    color: #333;
-    align-self: flex-start; /* Alinea a la izquierda */
+    background-color: #8a2be2; /* Morado vibrante para mensajes de IA */
+    color: #f0f0f0; /* Texto claro */
+    align-self: flex-start;
     border-bottom-left-radius: 5px;
+    box-shadow: 0 0 10px rgba(138, 43, 226, 0.5), /* Glow morado */
+                0 2px 5px rgba(0,0,0,0.3);
 }
 
 .message p {
@@ -96,56 +143,107 @@ header h1 {
 
 .chat-input-area {
     display: flex;
-    gap: 10px; /* Espacio entre textarea y botón */
-    align-items: flex-end; /* Alinea el botón con la parte inferior del textarea si crece */
+    gap: 10px;
+    align-items: flex-end;
+    padding-top: 15px; /* Añade un poco de espacio arriba del área de input */
+    flex-shrink: 0; /* Evita que el área de input se encoja */
 }
 
 #user-input {
-    flex-grow: 1; /* El textarea ocupa el espacio disponible */
+    flex-grow: 1;
     padding: 12px 15px;
-    border: 1px solid #ccc;
+    border: 1px solid #4a0072; /* Borde morado */
     border-radius: 8px;
     font-size: 1em;
     font-family: 'Roboto', sans-serif;
-    resize: vertical; /* Permite redimensionar verticalmente */
-    min-height: 40px; /* Altura mínima para que coincida con el botón */
-    box-sizing: border-box; /* Incluye padding y border en el tamaño total */
+    resize: vertical;
+    min-height: 40px;
+    box-sizing: border-box;
+    background-color: #2c203a; /* Fondo oscuro para el textarea */
+    color: #e0e0e0; /* Texto claro */
+}
+
+#user-input::placeholder {
+    color: #a0a0a0; /* Placeholder un poco más tenue */
 }
 
 #user-input:focus {
     outline: none;
-    border-color: #3498db; /* Color de borde al enfocar */
-    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    border-color: #ff8c00; /* Borde naranja al enfocar */
+    box-shadow: 0 0 8px rgba(255, 140, 0, 0.6), /* Glow naranja al enfocar */
+                0 0 0 2px rgba(255, 140, 0, 0.2);
 }
 
-#send-button {
+#send-button, .file-upload-btn { /* Estilo base para ambos botones */
     padding: 12px 20px;
-    background-color: #2ecc71; /* Verde para el botón de enviar */
     color: white;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-size: 1em;
     font-weight: bold;
-    transition: background-color 0.2s ease;
-    height: fit-content; /* Ajusta la altura al contenido */
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    height: fit-content;
+    align-self: flex-end;
+}
+
+#send-button {
+    background-color: #ff8c00; /* Botón de enviar naranja */
+    box-shadow: 0 0 8px rgba(255, 140, 0, 0.5); /* Glow naranja */
 }
 
 #send-button:hover {
-    background-color: #27ae60; /* Verde más oscuro al pasar el ratón */
+    background-color: #ff6700; /* Naranja más intenso */
+    box-shadow: 0 0 12px rgba(255, 103, 0, 0.7);
 }
 
-footer {
-    text-align: center;
-    margin-top: 30px;
+.file-upload-btn {
+    background-color: #8a2be2; /* Botón de adjuntar morado */
+    padding: 10px 15px; /* Ajuste específico si es necesario */
+    font-size: 1.2em;
+    box-shadow: 0 0 8px rgba(138, 43, 226, 0.5); /* Glow morado */
+}
+
+.file-upload-btn:hover {
+    background-color: #7b24c6; /* Morado más intenso */
+    box-shadow: 0 0 12px rgba(123, 36, 198, 0.7);
+}
+
+.file-display {
     font-size: 0.9em;
-    color: #7f8c8d; /* Gris para el pie de página */
+    color: #c0c0c0; /* Texto un poco más claro para el nombre del archivo */
+    margin-top: 8px;
+    margin-left: 55px; /* Ajusta según tu layout */
+    text-align: left;
+    flex-shrink: 0; /* Evita que esta área se encoja */
+    padding-bottom: 5px; /* Pequeño espacio si hay algo debajo o es el final */
 }
 
-/* Estilos para el indicador de carga (opcional, lo añadiremos con JS) */
-.loading-indicator {
+.file-display span {
+    background-color: rgba(255, 255, 255, 0.1); /* Fondo sutil para el nombre del archivo */
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-right: 5px;
+    border: 1px solid #4a0072; /* Borde morado */
+}
+
+.file-display button.remove-file-btn { /* Estilo específico para el botón de quitar */
+    background: none;
+    border: none;
+    color: #ff6700; /* Naranja para el botón de quitar */
+    cursor: pointer;
+    font-size: 1.2em;
+    padding: 0 5px;
+    margin-left: 5px;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(255, 103, 0, 0.7); /* Ligero glow */
+}
+.file-display button.remove-file-btn:hover {
+    color: #ffa500;
+}
+
+/* Indicador de carga */
+.loading-indicator p {
+    color: #c0c0c0;
     font-style: italic;
-    color: #7f8c8d;
-    padding: 10px 15px;
-    align-self: center;
 }

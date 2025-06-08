@@ -6,6 +6,8 @@
     <title>Chat con IA Local</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Si quieres usar un icono de librería como Font Awesome, necesitarías añadir su enlace aquí -->
+    <!-- Ejemplo Font Awesome: <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> -->
 </head>
 <body>
     <div class="container">
@@ -23,8 +25,21 @@
                 </div>
 
                 <div class="chat-input-area">
+                    <!-- Botón para activar la subida de archivos -->
+                    <button id="upload-file-button" class="file-upload-btn" title="Adjuntar archivo">
+                        +
+                        <!-- Si usaras Font Awesome, podrías poner: <i class="fas fa-paperclip"></i> o <i class="fas fa-plus"></i> -->
+                    </button>
+                    <!-- Input de archivo real, oculto. Se activa mediante JavaScript -->
+                    <input type="file" id="file-input" style="display: none;">
+                    
                     <textarea id="user-input" placeholder="Escribe tu pregunta aquí..." rows="3"></textarea>
                     <button id="send-button">Enviar</button>
+                </div>
+                
+                <!-- Área para mostrar el nombre del archivo seleccionado y opción de quitarlo -->
+                <div id="file-display-area" class="file-display">
+                    <!-- El nombre del archivo y el botón de quitar aparecerán aquí mediante JavaScript -->
                 </div>
             </div>
         </main>
